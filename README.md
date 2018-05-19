@@ -6,7 +6,7 @@
 cd HGCtutorial  
 
 #### SRAからシーケンスデータをdownloadするプログラムを用意  
->wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/2.9.0/sratoolkit.2.9.0-centos_linux64.tar.gz
+>wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/2.9.0/sratoolkit.2.9.0-centos_linux64.tar.gz  
 tar xvzf sratoolkit.2.9.0-centos_linux64.tar.gz
 sratoolkit.2.9.0-centos_linux64/bin/fastq-dump  
 
@@ -14,10 +14,10 @@ sratoolkit.2.9.0-centos_linux64/bin/fastq-dump
 #### リードをdownload
 >sratoolkit.2.9.0-centos_linux64/bin/prefetch SRR001666  
 sratoolkit.2.9.0-centos_linux64/bin/fastq-dump SRR001666  
-mv  SRR001666.fastq  read.fastq  
+mv SRR001666.fastq  read.fastq  
 
 #### リファレンスをdownload  
->wget　http://genome2d.molgenrug.nl/Bacteria/Escherichia_coli_K_12_substr__MG1655_uid57779/NC_000913.fna  
+>wget http://genome2d.molgenrug.nl/Bacteria/Escherichia_coli_K_12_substr__MG1655_uid57779/NC_000913.fna  
 mkdir ref  
 mv NC_000913.fna ref/reference.fa  
 
