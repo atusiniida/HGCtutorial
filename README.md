@@ -1,5 +1,5 @@
 ## HGCスパコンの並列化チュートリアル
-大腸菌次世代シーケンサーデータを大腸菌ゲノムにbwaでmappingする処理をpython 及びUniva Grid Engineを用いて並列化する
+[大腸菌次世代シーケンサーデータ](https://www.ncbi.nlm.nih.gov/sra/?term=SRR001666)を[大腸菌ゲノム](https://www.ncbi.nlm.nih.gov/nuccore/NC_000913.3)にbwaでmappingする処理をpython 及びUniva Grid Engineを用いて並列化する
 
 #### working directoryの作成
 `mkdir HGCtutorial`  
@@ -7,7 +7,7 @@
 
 #### SRAからシーケンスデータをdownloadするプログラムを用意  
 `wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/2.9.0/sratoolkit.2.9.0-centos_linux64.tar.gz`  
-`tar xvzf sratoolkit.2.9.0-centos_linux64.tar.gz`
+`tar xvzf sratoolkit.2.9.0-centos_linux64.tar.gz`  
 `sratoolkit.2.9.0-centos_linux64/bin/fastq-dump`  
 
 
