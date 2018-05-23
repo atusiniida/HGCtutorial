@@ -4,8 +4,8 @@ import subprocess
 import time
 
 argv = sys.argv
-if (len(argv) != 3):
-    print('Usage: # python %s filename numberOfJobs' % argv[0])
+if len(argv) != 3:
+    print('Usage: # python ' + argv[0] + ' filename numberOfJobs')
     quit()
 
 inFile = argv[1]
@@ -33,8 +33,9 @@ lineIndex = 0
 totalLineNumber = int(run("wc " + inFile).strip().split()[0])
 maxLineNumber = int(int(totalLineNumber)/n)
 
-pid = os.getpid()  # get process id
-prefix = "tmp" + str(pid)
+# pid = os.getpid()  # get process id
+# prefix = "tmp" + str(pid)
+prefix = "tmp"
 fastqFile = prefix + "." + str(fileIndex) + ".fastq"
 
 IN = open(inFile)

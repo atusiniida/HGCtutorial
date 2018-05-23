@@ -45,8 +45,8 @@
 
 または
 
-`bwa-0.7.12/bwa aln ref/ecoli_index read10000.fastq > read10000.sai`  
-`bwa-0.7.12/bwa samse ref/ecoli_index read10000.sai read10000.fastq > read10000.sam`
+`bwa aln ref/ecoli_index read10000.fastq > read10000.sai`  
+`bwa samse ref/ecoli_index read10000.sai read10000.fastq > read10000.sam`
 
 
 #### python3 設定
