@@ -67,7 +67,8 @@ for fileIndex in range(maxFileIndex+1):
 
 # wait for jobs to finish
 
-tmp = 1
+tmp = run("qstat | grep  " + prefix + " | wc")
+tmp = int(tmp.strip().split()[0])
 while tmp > 0:
     time.sleep(1)
     tmp = run("qstat | grep  " + prefix + " | wc")

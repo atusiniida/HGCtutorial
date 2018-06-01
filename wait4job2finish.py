@@ -22,8 +22,10 @@ def run(command):
         return None
 
 
-tmp = 1
+tmp = run("qstat | grep  " + prefix + " | wc")
+tmp = int(tmp.strip().split()[0])
 while tmp > 0:
+    print("waiting......")
     time.sleep(1)
     tmp = run("qstat | grep  " + prefix + " | wc")
     tmp = int(tmp.strip().split()[0])
