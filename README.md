@@ -60,7 +60,12 @@
 
 #### 並列化scriptをdownload
 `wget https://raw.githubusercontent.com/atusiniida/HGCtutorial/master/bwa.sh`  
-`wget https://raw.githubusercontent.com/atusiniida/HGCtutorial/master/paralellBwa.py`  
+`wget https://raw.githubusercontent.com/atusiniida/HGCtutorial/master/paralellBwa.py`
+`wget https://raw.githubusercontent.com/atusiniida/HGCtutorial/master/splitFastq.py`
+`wget https://raw.githubusercontent.com/atusiniida/HGCtutorial/master/qsubBwa.py`
+`wget https://raw.githubusercontent.com/atusiniida/HGCtutorial/master/wait4job2finish.py`
+`wget https://raw.githubusercontent.com/atusiniida/HGCtutorial/master/catSam.py`
+`wget https://raw.githubusercontent.com/atusiniida/HGCtutorial/master/runCommand.py`  
 
 #### qsubでbwaをsubmit
 `qsub bwa.sh  read10000 ref/ecoli_index`
