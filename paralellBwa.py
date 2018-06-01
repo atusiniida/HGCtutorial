@@ -22,7 +22,7 @@ def run(command):
                               check=True, stdout=subprocess.PIPE)\
                               .stdout.decode('utf-8')
     except Exception as e:
-        sys.stdout.write(str(e))
+        sys.stdout.write(str(e) + "\n")
         return None
 
 
@@ -31,11 +31,12 @@ fileIndex = 0
 lineIndex = 0
 
 totalLineNumber = int(run("wc " + inFile).strip().split()[0])
-maxLineNumber = int(int(totalLineNumber)/n)
+maxLineNumber = int(totalLineNumber/n)
+# maxLineNumber must be devided evenly by 4
+maxLineNumber = int(maxLineNumber/4)*4
 
-# pid = os.getpid()  # get process id
-# prefix = "tmp" + str(pid)
-prefix = "tmp"
+pid = os.getpid()  # get process id
+prefix = "tmp" + str(pid)
 fastqFile = prefix + "." + str(fileIndex) + ".fastq"
 
 IN = open(inFile)

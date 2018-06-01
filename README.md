@@ -68,19 +68,30 @@
 #### read.fastqを10並列でmapping
 `python paralellBwa.py  read.fastq 10 > read.sam`
 
-やっていること  
-1 fastqファイルに分割する。
+paralellBwa.pyの中でやっていること  
+1 fastqファイルを分割する。  
+`python splitFastq.py read.fastq 10 tmp`
 
-　プロセス id の取得:  
+2 分割した各fastqファイルをインプットとしqsubでbwa.shをなげる。  
+`python qsubBwa.py tmp*.fastq`
+
+3 qstat でjobが終わってるかをみる。  
+`python wait4job2finish.py tmp`
+
+4 終わったらoutputをまとめる。  
+`python catSam.py tmp*.sam > read.sam`
+
+pythonの中からshellのコマンドを実行するときはrun関数を使う。runCommand.pyを参照。  
+`python runCommand.py pwd`
+
+tmp FileのprefixをプロセスIDにする事で、異なるプロセスでスクリプトを同時に投げた場合の干渉が防げる。
+
+プロセス id の取得:  
 　　import  os   
 　　pid =  os.getpid()  
 　　prefix = “tmp.”  + str(pid)  
 　分割したファイル名:  
 　　prefix + “.” + str(fileindex) + “.fastq”
-
-2 qsubでbwa.shをなげる。  
-3 qstat でjobが終わってるかをみる。  
-4 終わったらoutputをまとめる。
 
 #### qsub  よくつかうオプション
 https://supcom.hgc.jp/japanese/utili_info/manual/uge.html  
