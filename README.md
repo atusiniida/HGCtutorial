@@ -89,7 +89,7 @@ paralellBwa.pyの中でやっていること
 pythonの中からshellのコマンドを実行するときはrun関数を使う。runCommand.pyを参照。  
 `python runCommand.py pwd`
 
-tmp FileのprefixをプロセスIDにする事で、異なるプロセスでスクリプトを同時に投げた場合の干渉が防げる。
+分割したファイルのprefixをプロセスIDにする事で、異なるプロセスでスクリプトを同時に投げた場合の干渉が防げる。
 
 プロセス id の取得:  
 　　import  os   

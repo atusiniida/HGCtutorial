@@ -26,7 +26,7 @@ def run(command):
 # submit jobs
 for f in inFiles:
     prefix = f.replace(".fastq", "")
-    qsub = "qsub -N  " + f + " bwa.sh " + prefix + "  " + reference \
+    qsub = "qsub -N  " +  prefix + " bwa.sh " + prefix + "  " + reference \
            + " > /dev/null"
     # check whether qsub is succesfly done
     while run(qsub) is None:
