@@ -1,36 +1,55 @@
 ## HGCスパコンの並列化チュートリアル
 [大腸菌次世代シーケンサーデータ](https://www.ncbi.nlm.nih.gov/sra/?term=SRR001666)を[大腸菌ゲノム](https://www.ncbi.nlm.nih.gov/nuccore/NC_000913.3)にbwaでmappingする処理をpython 及びUniva Grid Engineを用いて並列化する
 
-#### working directoryの作成
-`mkdir HGCtutorial`  
-`cd HGCtutorial`  
+#### directoryの作成
+`mkdir HGCtutorial`   
+`mkdir bin`  
+`mkdir package`
 
-#### SRAからシーケンスデータをdownloadするプログラムを用意  
-`wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/2.9.0/sratoolkit.2.9.0-centos_linux64.tar.gz`  
+#### PATHを通す
+`export PATH=${HOME}/bin:${PATH}`  
+~/.bashrc に書き込むことで次回ログイン時に自動設定される　  
+`echo export PATH=\${HOME}/bin:\${PATH} >> ~/.bashrc`　
+#### python3 設定
+`export LD_LIBRARY_PATH=/usr/local/package/python/3.6.4/lib:${LD_LIBRARY_PATH}`  
+`export PATH=/usr/local/package/python/3.6.4/bin:${PATH}`  
+~/.bashrc に書き込むことで次回ログイン時に自動設定される  
+`echo export LD_LIBRARY_PATH=/usr/local/package/python/3.6.4/lib:\${LD_LIBRARY_PATH} >> ~/.bashrc`  
+`echo export PATH=/usr/local/package/python/3.6.4/bin:\${PATH} >> ~/.bashrc`
+
+#### sratoolkit のインストール
+https://www.ncbi.nlm.nih.gov/books/NBK242621/  
+`cd package`  
+`wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/2.9.0/sratoolkit.2.9.0-centos_linux64.tar.gz`
 `tar xvzf sratoolkit.2.9.0-centos_linux64.tar.gz`  
-`sratoolkit.2.9.0-centos_linux64/bin/fastq-dump`  
+`ln -s ~/package/sratoolkit.2.9.0-centos_linux64/bin/* ~/bin`  
+`rm sratoolkit.2.9.0-centos_linux64.tar.gz`   
+`cd ..`  
 
 
-#### リードをdownload
-`sratoolkit.2.9.0-centos_linux64/bin/prefetch SRR001666`  
-`sratoolkit.2.9.0-centos_linux64/bin/fastq-dump SRR001666`  
-`mv SRR001666.fastq  read.fastq`  
-
-#### リファレンスをdownload  
-`wget http://genome2d.molgenrug.nl/Bacteria/Escherichia_coli_K_12_substr__MG1655_uid57779/NC_000913.fna`  
-`mkdir ref`  
-`mv NC_000913.fna ref/reference.fa`  
-
-#### bwaをdownload  
+#### bwa　のインストール
+`cd package`  
 `wget -O bwa-0.7.12.tar.bz2 'http://sourceforge.net/projects/bio-bwa/files/bwa-0.7.12.tar.bz2/download?use_mirror=jaist&r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fbio-bwa%2Ffiles%2F&use_mirror=jaist'`  
  `bzip2 -dc bwa-0.7.12.tar.bz2 | tar xvf -`  
  `cd bwa-0.7.12`  
  `make`  
  `cd ..`  
+ `ln -s ~/package/bwa-0.7.12/bin/bwa ~/bin`   
+ `rm bwa-0.7.12.tar.bz2`  
+ `cd ..`
 
-#### bwaのPATHをとおす  
-`export PATH=$HOME/UGEtutorial/bwa-0.7.12:$PATH`    
-`printenv  PATH`  
+#### リードをdownload
+`cd HGCtutorial`  
+以降HGCtutorialにて作業  
+`prefetch SRR001666`  
+`fastq-dump SRR001666`  
+`mv SRR001666.fastq  read.fastq`  
+
+#### リファレンスをdownload
+`wget http://genome2d.molgenrug.nl/Bacteria/Escherichia_coli_K_12_substr__MG1655_uid57779/NC_000913.fna`  
+`mkdir ref`  
+`mv NC_000913.fna ref/reference.fa`  
+
 
 #### インデックスファイルの作成  
 `cd ref`  
@@ -49,23 +68,8 @@
 `bwa samse ref/ecoli_index read10000.sai read10000.fastq > read10000.sam`
 
 
-#### python3 設定
-`export LD_LIBRARY_PATH=/usr/local/package/python/3.6.4/lib:${LD_LIBRARY_PATH}`  
-`export PATH=/usr/local/package/python/3.6.4/bin:${PATH}`  
-
-~/.bashrc に書き込むことで次回ログイン時に自動設定される
-
-`echo ‘export LD_LIBRARY_PATH=/usr/local/package/python/3.6.4/lib:${LD_LIBRARY_PATH} ‘ >> ~/.bashrc`  
-`echo ‘LD_LIBRARY_PATH=/usr/local/package/python/3.6.4/lib:${LD_LIBRARY_PATH}’  >> ~/.bashrc`  
-
 #### 並列化scriptをdownload
-`wget https://raw.githubusercontent.com/atusiniida/HGCtutorial/master/bwa.sh`  
-`wget https://raw.githubusercontent.com/atusiniida/HGCtutorial/master/paralellBwa.py`  
-`wget https://raw.githubusercontent.com/atusiniida/HGCtutorial/master/splitFastq.py`  
-`wget https://raw.githubusercontent.com/atusiniida/HGCtutorial/master/qsubBwa.py`  
-`wget https://raw.githubusercontent.com/atusiniida/HGCtutorial/master/wait4job2finish.py`  
-`wget https://raw.githubusercontent.com/atusiniida/HGCtutorial/master/catSam.py`  
-`wget https://raw.githubusercontent.com/atusiniida/HGCtutorial/master/runCommand.py`    
+  
 
 #### qsubでbwaをsubmit
 `qsub bwa.sh  read10000 ref/ecoli_index`
