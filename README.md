@@ -1,31 +1,36 @@
 ## HGCスパコンの並列化チュートリアル
 [大腸菌次世代シーケンサーデータ](https://www.ncbi.nlm.nih.gov/sra/?term=SRR001666)を[大腸菌ゲノム](https://www.ncbi.nlm.nih.gov/nuccore/NC_000913.3)にbwaでmappingする処理をpython 及びUniva Grid Engineを用いて並列化する
 
-#### directoryの作成
-`mkdir HGCtutorial`   
+#### directoryの作成、 codeのダウンロード
 `mkdir bin`  
-`mkdir package`
+`mkdir package`  
+`git clone  https://github.com/atusiniida/HGCtutorial.git`     
 
 #### PATHを通す
-`export PATH=${HOME}/bin:${PATH}`  
+`export PATH=${HOME}/bin:${PATH}`
+
 ~/.bashrc に書き込むことで次回ログイン時に自動設定される　  
+
 `echo export PATH=\${HOME}/bin:\${PATH} >> ~/.bashrc`　
+
 #### python3 設定
 `export LD_LIBRARY_PATH=/usr/local/package/python/3.6.4/lib:${LD_LIBRARY_PATH}`  
 `export PATH=/usr/local/package/python/3.6.4/bin:${PATH}`  
+
 ~/.bashrc に書き込むことで次回ログイン時に自動設定される  
+
 `echo export LD_LIBRARY_PATH=/usr/local/package/python/3.6.4/lib:\${LD_LIBRARY_PATH} >> ~/.bashrc`  
 `echo export PATH=/usr/local/package/python/3.6.4/bin:\${PATH} >> ~/.bashrc`
 
 #### sratoolkit のインストール
 https://www.ncbi.nlm.nih.gov/books/NBK242621/  
+
 `cd package`  
 `wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/2.9.0/sratoolkit.2.9.0-centos_linux64.tar.gz`
 `tar xvzf sratoolkit.2.9.0-centos_linux64.tar.gz`  
 `ln -s ~/package/sratoolkit.2.9.0-centos_linux64/bin/* ~/bin`  
 `rm sratoolkit.2.9.0-centos_linux64.tar.gz`   
 `cd ..`  
-
 
 #### bwa　のインストール
 `cd package`  
@@ -39,8 +44,10 @@ https://www.ncbi.nlm.nih.gov/books/NBK242621/
  `cd ..`
 
 #### リードをdownload
-`cd HGCtutorial`  
+`cd HGCtutorial`
+
 以降HGCtutorialにて作業  
+
 `prefetch SRR001666`  
 `fastq-dump SRR001666`  
 `mv SRR001666.fastq  read.fastq`  
@@ -68,30 +75,27 @@ https://www.ncbi.nlm.nih.gov/books/NBK242621/
 `bwa samse ref/ecoli_index read10000.sai read10000.fastq > read10000.sam`
 
 
-#### 並列化scriptをdownload
-  
-
 #### qsubでbwaをsubmit
-`qsub bwa.sh  read10000 ref/ecoli_index`
+`qsub code/bwa.sh  read10000 ref/ecoli_index`
 
 #### read.fastqを10並列でmapping
-`python paralellBwa.py  read.fastq 10 > read.sam`
+`python code/paralellBwa.py  read.fastq 10 > read.sam`
 
-paralellBwa.pyの中でやっていること  
+#### paralellBwa.pyの中でやっていること  
 1 fastqファイルを分割する。  
-`python splitFastq.py read.fastq 10 tmp`
+`python code/splitFastq.py read.fastq 10 tmp`
 
-2 分割した各fastqファイルをインプットとしqsubでbwa.shをなげる。  
-`python qsubBwa.py tmp*.fastq`
+2 分割した各fastqファイルをインプットとしqsubでcode/bwa.shをなげる。  
+`python code/qsubBwa.py tmp*.fastq`
 
 3 qstat でjobが終わってるかをみる。  
-`python wait4job2finish.py tmp`
+`python code/wait4job2finish.py tmp`
 
 4 終わったらoutputをまとめる。  
-`python catSam.py tmp*.sam > read.sam`
+`python code/catSam.py tmp*.sam > read.sam`
 
 pythonの中からshellのコマンドを実行するときはrun関数を使う。runCommand.pyを参照。  
-`python runCommand.py pwd`
+`python code/runCommand.py pwd`
 
 分割したファイルのprefixをプロセスIDにする事で、異なるプロセスでスクリプトを同時に投げた場合の干渉が防げる。
 
