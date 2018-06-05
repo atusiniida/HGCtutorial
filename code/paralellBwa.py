@@ -59,8 +59,9 @@ IN.close()
 maxFileIndex = fileIndex
 for fileIndex in range(maxFileIndex+1):
     prefix2 = prefix + "." + str(fileIndex)
-    qsub = "qsub -N  " + prefix2 + " code/bwa.sh " + prefix2 + "  " \
-           + reference + " > /dev/null"
+    qsub = "qsub -N  " + prefix2 + " -e  " + prefix2 + ".e" + \
+        " -o  " + prefix2 + ".sam" " code/bwa.sh " + prefix2 + "  " \
+        + reference + " > /dev/null"
     # check whether qsub is succesfly done
     while run(qsub) is None:
             time.sleep(10)
@@ -79,7 +80,7 @@ for fileIndex in range(maxFileIndex+1):
     samFile = prefix + "." + str(fileIndex) + ".sam"
     IN = open(samFile)
     line = IN.readline()
-    # take headers　only for the first file
+    # take headers only for the first file
     if fileIndex > 0:
         while line.startswith('@'):
             line = IN.readline()
