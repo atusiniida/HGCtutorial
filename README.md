@@ -88,7 +88,7 @@ https://www.ncbi.nlm.nih.gov/books/NBK242621/
 2 分割した各fastqファイルをインプットとしqsubでcode/bwa.shをなげる。  
 `python code/qsubBwa.py tmp*.fastq`
 
-3 qstat でjobが終わってるかをみる。  
+3 1秒ごとにqstatし、jobが終わるまで待つ。  
 `python code/wait4job2finish.py tmp`
 
 4 終わったらoutputをまとめる。  
