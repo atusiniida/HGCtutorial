@@ -59,7 +59,7 @@ IN.close()
 maxFileIndex = fileIndex
 for fileIndex in range(maxFileIndex+1):
     prefix2 = prefix + "." + str(fileIndex)
-    qsub = "qsub -N  " + prefix2 + " -e  " + prefix2 + ".e" + \
+    qsub = "qsub -N  " + prefix2 + " -e  " + prefix2 + ".err" + \
         " -o  " + prefix2 + ".sam" " code/bwa.sh " + prefix2 + "  " \
         + reference + " > /dev/null"
     # check whether qsub is succesfly done
